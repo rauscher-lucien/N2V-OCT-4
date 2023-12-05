@@ -1,15 +1,15 @@
-import logging
-logging.basicConfig(filename='logfile.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-log_file = open('logfile.log', 'w', buffering=1)
-sys.stdout = log_file
-sys.stderr = log_file
-
 # Imports
 
 ## Add the modules to the system path
 import os
 import sys
 sys.path.append(os.path.join(".."))
+
+import logging
+logging.basicConfig(filename='logfile.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log_file = open('logfile.log', 'w', buffering=1)
+sys.stdout = log_file
+sys.stderr = log_file
 
 ## Libs
 from random import shuffle
