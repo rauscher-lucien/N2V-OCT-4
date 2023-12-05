@@ -1,3 +1,9 @@
+import logging
+logging.basicConfig(filename='logfile.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log_file = open('logfile.log', 'w', buffering=1)
+sys.stdout = log_file
+sys.stderr = log_file
+
 # Imports
 
 ## Add the modules to the system path
@@ -19,8 +25,8 @@ from train import Trainer
 
 
 # Enter the store path for the results and raw file here #
-# my_folder = os.path.join('/g', 'prevedel', 'members', 'Rauscher')
-my_folder = os.path.join('Z:', 'members', 'Rauscher')
+my_folder = os.path.join('/g', 'prevedel', 'members', 'Rauscher')
+# my_folder = os.path.join('Z:', 'members', 'Rauscher')
 project_dir = os.path.join(my_folder, 'projects', 'N2V-OCT-4')
 path_results = os.path.join(project_dir, "results")
 
