@@ -25,8 +25,8 @@ from train import Trainer
 
 
 # Enter the store path for the results and raw file here #
-# my_folder = os.path.join('/g', 'prevedel', 'members', 'Rauscher')
-my_folder = os.path.join('Z:', 'members', 'Rauscher')
+my_folder = os.path.join('/g', 'prevedel', 'members', 'Rauscher')
+# my_folder = os.path.join('Z:', 'members', 'Rauscher')
 project_dir = os.path.join(my_folder, 'projects', 'N2V-OCT-4')
 path_results = os.path.join(project_dir, "results")
 
@@ -98,7 +98,7 @@ epoch = 300
 batch_size = 4
 
 # Logger frequencies
-display_freq = 1
+display_freq = 20
 model_storing_freq = 50
 #*********************************#
 
