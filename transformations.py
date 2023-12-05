@@ -622,3 +622,59 @@ class PercentileDenormalize3D(object):
                 data = torch.clip(data, 0, 1)
 
         return data
+
+
+class ZCrop3D(object):
+    """
+        Crop the first and last n-th time frames of the 3D data
+
+    Attributes
+    ----------
+        z_cropwidth : tuple, int
+            crop width of the front and tail of the 3D data (crop_width_front, crop_width_tail)
+            int-value of the crop_width of the 3D data (crop_width, crop_width)
+
+    Methods
+    -------
+    __call__(data)
+        Applies the cropping of the 3D data
+    """
+
+    def __init__(self, z_cropwidth):
+        assert isinstance(z_cropwidth, (int, tuple))
+        if isinstance(z_cropwidth, int):
+            self.z_cropwidth = (z_cropwidth, z_cropwidth)
+        else:
+            assert len(z_cropwidth) == 2
+            self.z_cropwidth = z_cropwidth
+
+    def __call__(self, data):
+        """
+        Applies the cropping of the 3D data
+
+        Parameters
+        ----------
+        data : numpy.ndarray/torch.Tensor
+            image-stack-data, from which front and tail is cropped
+
+        Returns
+        -------
+        data : numpy.ndarray/torch.Tensor
+            cropped image_stack with the wanted croppwidth. Batch, x, y or
+            channel dimension stay unmodified.
+        """
+
+        crop_front, crop_tail = self.z_cropwidth
+
+        if isinstance(data, torch.Tensor):
+
+            data = data[...,crop_front:-crop_tail, :, :]
+
+        else:
+
+            if len(data.shape) < 4:
+                data = data[crop_front:-crop_tail]
+            else:
+                data = data[..., crop_front:-crop_tail, :,:,:]
+
+        return data
