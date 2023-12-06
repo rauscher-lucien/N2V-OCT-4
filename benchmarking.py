@@ -1,9 +1,18 @@
 # benchmark_pytorch.py
+import sys
 from timeit import default_timer as timer
 import torch
 import torch.nn as nn
 import torchvision
 import torch.utils.benchmark as benchmark
+
+from network import Noise2NoiseUNet3D, init_weights
+
+import logging
+logging.basicConfig(filename='logfile.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log_file = open('logfile.log', 'w', buffering=1)
+sys.stdout = log_file
+sys.stderr = log_file
 
 
 @torch.no_grad()
@@ -97,16 +106,19 @@ def run_inference(model: nn.Module,
 
 def main() -> None:
 
-    num_warmups = 100
-    num_repeats = 1000
-    input_shape = (1, 3, 224, 224)
+    num_warmups = 5
+    num_repeats = 10
+    input_shape = (4, 1, 16, 64, 64)
 
-    device = torch.device("cuda:0")
+    # check if we have  a gpu
+    if torch.cuda.is_available():
+        print("GPU is available")
+        device = torch.device("cuda:0")
+    else:
+        print("GPU is not available")
+        device = torch.device("cpu")
 
-    # model = torchvision.models.resnet18(pretrained=False)
-    model = nn.Conv2d(in_channels=input_shape[1],
-                      out_channels=256,
-                      kernel_size=(5, 5))
+    model = Noise2NoiseUNet3D(in_channels = 1, out_channels = 1, final_sigmoid = False).to(device)
 
     model.to(device)
     model.eval()
@@ -114,7 +126,8 @@ def main() -> None:
     # Input tensor
     input_tensor = torch.rand(input_shape, device=device)
 
-    torch.cuda.synchronize()
+    if device == torch.device("cuda:0"):
+        torch.cuda.synchronize()
 
     print("Latency Measurement Using CPU Timer...")
     for continuous_measure in [True, False]:
@@ -137,7 +150,8 @@ def main() -> None:
                       f"Synchronization: {synchronize!s:5}| "
                       f"Continuous Measurement: {continuous_measure!s:5}| "
                       f"Latency: N/A     ms| ")
-            torch.cuda.synchronize()
+            if device == torch.device("cuda:0"):
+                torch.cuda.synchronize()
 
     print("Latency Measurement Using CUDA Timer...")
     for continuous_measure in [True, False]:
@@ -160,7 +174,8 @@ def main() -> None:
                       f"Synchronization: {synchronize!s:5}| "
                       f"Continuous Measurement: {continuous_measure!s:5}| "
                       f"Latency: N/A     ms| ")
-            torch.cuda.synchronize()
+            if device == torch.device("cuda:0"):
+                torch.cuda.synchronize()
 
     print("Latency Measurement Using PyTorch Benchmark...")
     num_threads = 1
