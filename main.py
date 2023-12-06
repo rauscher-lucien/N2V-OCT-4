@@ -25,10 +25,10 @@ from train import Trainer
 
 
 # Enter the store path for the results and raw file here #
-my_folder = os.path.join('/g', 'prevedel', 'members', 'Rauscher')
-# my_folder = os.path.join('Z:', 'members', 'Rauscher')
+# my_folder = os.path.join('/g', 'prevedel', 'members', 'Rauscher')
+my_folder = os.path.join('Z:', 'members', 'Rauscher')
 project_dir = os.path.join(my_folder, 'projects', 'N2V-OCT-4')
-path_results = os.path.join(project_dir, 'results_3_layers')
+path_results = os.path.join(project_dir, 'results_8_fmaps_5_layers')
 
 path_dataset =  os.path.join(my_folder, 'data', 'OCT-data-1')
 path_train_dataset = os.path.join(path_dataset, 'train')

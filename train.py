@@ -276,6 +276,7 @@ class Trainer:
          
         net = Noise2NoiseUNet3D(in_channels = 1,
                                 out_channels = 1,
+                                f_maps = 8,
                                 final_sigmoid = False).to(device)
 
         init_weights(net, init_type='normal', init_gain=0.02)

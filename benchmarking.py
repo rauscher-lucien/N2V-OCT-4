@@ -118,7 +118,7 @@ def main() -> None:
         print("GPU is not available")
         device = torch.device("cpu")
 
-    model = Noise2NoiseUNet3D(in_channels = 1, out_channels = 1, final_sigmoid = False).to(device)
+    model = Noise2NoiseUNet3D(in_channels = 1, out_channels = 1, f_maps=16, num_groups=8, number_of_fmaps=5, final_sigmoid = False).to(device)
 
     model.to(device)
     model.eval()

@@ -23,7 +23,7 @@ class Noise2NoiseUNet3D(nn.Module):
         num_groups (int): number of groups for the GroupNorm
     """
 
-    def __init__(self, in_channels, out_channels, f_maps=16, num_groups=8, **kwargs):
+    def __init__(self, in_channels, out_channels, f_maps=16, num_groups=8, number_of_fmaps=5, **kwargs):
         super(Noise2NoiseUNet3D, self).__init__()
 
         # Use LeakyReLU activation everywhere except the last layer
@@ -31,7 +31,7 @@ class Noise2NoiseUNet3D(nn.Module):
 
         if isinstance(f_maps, int):
             # use 5 levels in the encoder path as suggested in the paper
-            f_maps = self.__create_feature_maps(f_maps, number_of_fmaps=5)
+            f_maps = self.__create_feature_maps(f_maps, number_of_fmaps)
 
         # create encoder path consisting of Encoder modules. The length of the encoder is equal to `len(f_maps)`
         # uses DoubleConv as a basic_module for the Encoder
